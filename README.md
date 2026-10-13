@@ -35,3 +35,10 @@ Python, PostgreSQL, FastAPI (planned), pytest (planned).
 ## Status
 
 Early setup. Nothing is deployed yet.
+
+## How to run
+Requires Python 3.13.
+1. python3.13 -m venv .venv
+2. source .venv/bin/activate
+3. pip install -r requirements.txt
+4. python audit/scb_probe.py
