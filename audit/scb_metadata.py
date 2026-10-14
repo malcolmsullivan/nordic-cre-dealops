@@ -2,7 +2,9 @@ import requests
 
 BASE_URL = "https://api.scb.se/ov0104/v2beta/api/v2"
 
-response = requests.get(f"{BASE_URL}/tables/TAB1165/metadata", timeout=10)
+TABLE_ID = "TAB402"
+
+response = requests.get(f"{BASE_URL}/tables/{TABLE_ID}/metadata", timeout=10)
 
 if response.status_code != 200:
     print("Request failed with status", response.status_code)
@@ -11,17 +13,13 @@ if response.status_code != 200:
 data = response.json()
 
 print(data["label"])
-print(data["id"])
-print(data["size"])
-print(list(data["dimension"].keys()))
 
-types = data["dimension"]["Fastighetstyp"]["category"]
-print(list(types.keys()))
-
-for code, name in types["label"].items():
-    print(code, "|", name)
-
-contents = data["dimension"]["ContentsCode"]["category"]
-
-for code, name in contents["label"].items():
-    print(code, "|", name)
+for dim in data["id"]:
+    labels = data["dimension"][dim]["category"]["label"]
+    print("===", dim, "|", len(labels), "categories")
+    if len(labels) <= 120:
+        for code, name in labels.items():
+            print(code, "|", name)
+    else:
+        for code, name in list(labels.items())[:5]:
+            print(" e.g.", code, "|", name)
